@@ -1,5 +1,6 @@
 // Copyright (c) 2020 Yandex LLC. All rights reserved.
 
+// Package yckmstink provides integration with the Yandex.Cloud KMS.
 package yckmstink
 
 import (
@@ -13,10 +14,10 @@ import (
 )
 
 const (
-	ycKmsPrefix = "yc-kms://"
+	YCKMSPrefix = "yc-kms://"
 )
 
-// YCKMSClient represents a client that connects to the YC KMS backend.
+// YCKMSClient represents a client that connects to the Yandex.Cloud KMS backend.
 type YCKMSClient struct {
 	keyURI string
 	sdk    *ycsdk.SDK
@@ -24,37 +25,40 @@ type YCKMSClient struct {
 
 var _ registry.KMSClient = (*YCKMSClient)(nil)
 
-func NewYCKMSClient(URI string, sdk *ycsdk.SDK) (*YCKMSClient, error) {
-	err := validateURI(URI)
+// NewYCKMSClient returns a new client to Yandex.Cloud KMS. If keyURI is not empty, the client is bound to the URI.
+func NewYCKMSClient(keyURI string, sdk *ycsdk.SDK) (*YCKMSClient, error) {
+	err := validateURI(keyURI)
 	if err != nil {
 		return nil, err
 	}
 	return &YCKMSClient{
-		keyURI: URI,
+		keyURI: keyURI,
 		sdk:    sdk,
 	}, nil
 }
 
 func validateURI(URI string) error {
-	if len(URI) > 0 && !strings.HasPrefix(strings.ToLower(URI), ycKmsPrefix) {
-		return fmt.Errorf("key URI must start with %s", ycKmsPrefix)
+	if len(URI) > 0 && !strings.HasPrefix(strings.ToLower(URI), YCKMSPrefix) {
+		return fmt.Errorf("key URI must start with %s", YCKMSPrefix)
 	}
 	return nil
 }
 
+// Supported returns true if this client does support keyURI
 func (c *YCKMSClient) Supported(keyURI string) bool {
 	if (len(c.keyURI) > 0) && (strings.Compare(strings.ToLower(c.keyURI), strings.ToLower(keyURI)) == 0) {
 		return true
 	}
-	return (len(c.keyURI) == 0) && (strings.HasPrefix(strings.ToLower(keyURI), ycKmsPrefix))
+	return (len(c.keyURI) == 0) && (strings.HasPrefix(strings.ToLower(keyURI), YCKMSPrefix))
 }
 
+// GetAEAD gets a new AEAD instance backed by keyURI.
 func (c *YCKMSClient) GetAEAD(keyURI string) (tink.AEAD, error) {
 	err := c.validateBoundClient(keyURI)
 	if err != nil {
 		return nil, err
 	}
-	keyID, err := validateTrimKMSPrefix(keyURI, ycKmsPrefix)
+	keyID, err := validateTrimKMSPrefix(keyURI, YCKMSPrefix)
 	if err != nil {
 		return nil, err
 	}

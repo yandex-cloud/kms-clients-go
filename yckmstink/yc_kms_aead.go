@@ -1,6 +1,8 @@
 // Copyright (c) 2020 Yandex LLC. All rights reserved.
 
+// Package yc provides integration with the Google Cloud KMS.
 package yckmstink
+
 import (
 	"context"
 
@@ -18,6 +20,7 @@ type YCAEAD struct {
 
 var _ tink.AEAD = (*YCAEAD)(nil)
 
+// NewYCAEAD returns a new AEAD instance backed by keyID.
 func NewYCAEAD(keyID string, sdk *ycsdk.SDK) *YCAEAD {
 	return &YCAEAD{
 		keyID: keyID,
@@ -25,7 +28,7 @@ func NewYCAEAD(keyID string, sdk *ycsdk.SDK) *YCAEAD {
 	}
 }
 
-// Encrypt AEAD encrypts the plaintext data and uses addtionaldata from authentication.
+// Encrypt AEAD encrypts the plaintext data and uses addtional data from authentication.
 func (aead *YCAEAD) Encrypt(plaintext, additionalData []byte) ([]byte, error) {
 	resp, err := aead.sdk.KMSCrypto().SymmetricCrypto().Encrypt(context.Background(), &kms.SymmetricEncryptRequest{
 		KeyId:      aead.keyID,
