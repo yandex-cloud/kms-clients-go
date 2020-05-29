@@ -6,8 +6,8 @@ import (
 
 	"github.com/google/tink/go/tink"
 
-	"bb.yandex-team.ru/cloud/cloud-go/genproto/publicapi/yandex/cloud/kms/v1"
-	ycsdk "bb.yandex-team.ru/cloud/cloud-go/sdk"
+	"github.com/yandex-cloud/go-genproto/yandex/cloud/kms/v1"
+	ycsdk "github.com/yandex-cloud/go-sdk"
 )
 
 // YCAEAD represents a encrypt/decrypt service using particular keyID

@@ -9,7 +9,7 @@ import (
 	"github.com/google/tink/go/core/registry"
 	"github.com/google/tink/go/tink"
 
-	ycsdk "bb.yandex-team.ru/cloud/cloud-go/sdk"
+	ycsdk "github.com/yandex-cloud/go-sdk"
 )
 
 const (
