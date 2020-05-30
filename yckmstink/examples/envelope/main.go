@@ -8,9 +8,10 @@ import (
 	"flag"
 	"log"
 
+	"github.com/google/tink/go/aead"
+
 	"github.com/yandex-cloud/kms-clients-go/yckmstink"
 	ycsdk "github.com/yandex-cloud/go-sdk"
-	"github.com/google/tink/go/aead"
 )
 
 const (
