@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Yandex LLC. All rights reserved.
 
-// Package yc provides integration with the Google Cloud KMS.
+// Package yckmstink provides integration with the Yandex.Cloud KMS.
 package yckmstink
 
 import (
